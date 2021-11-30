@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/webai/static/css/main.b19de417.chunk.css",
-    "main.js": "/webai/static/js/main.9c9157c3.chunk.js",
-    "main.js.map": "/webai/static/js/main.9c9157c3.chunk.js.map",
+    "main.css": "/webai/static/css/main.7c1a7819.chunk.css",
+    "main.js": "/webai/static/js/main.bd246469.chunk.js",
+    "main.js.map": "/webai/static/js/main.bd246469.chunk.js.map",
     "runtime-main.js": "/webai/static/js/runtime-main.c7fb6ef6.js",
     "runtime-main.js.map": "/webai/static/js/runtime-main.c7fb6ef6.js.map",
-    "static/js/2.db38f26d.chunk.js": "/webai/static/js/2.db38f26d.chunk.js",
-    "static/js/2.db38f26d.chunk.js.map": "/webai/static/js/2.db38f26d.chunk.js.map",
+    "static/js/2.307d97b4.chunk.js": "/webai/static/js/2.307d97b4.chunk.js",
+    "static/js/2.307d97b4.chunk.js.map": "/webai/static/js/2.307d97b4.chunk.js.map",
     "index.html": "/webai/index.html",
-    "static/css/main.b19de417.chunk.css.map": "/webai/static/css/main.b19de417.chunk.css.map",
-    "static/js/2.db38f26d.chunk.js.LICENSE.txt": "/webai/static/js/2.db38f26d.chunk.js.LICENSE.txt"
+    "static/css/main.7c1a7819.chunk.css.map": "/webai/static/css/main.7c1a7819.chunk.css.map",
+    "static/js/2.307d97b4.chunk.js.LICENSE.txt": "/webai/static/js/2.307d97b4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c7fb6ef6.js",
-    "static/js/2.db38f26d.chunk.js",
-    "static/css/main.b19de417.chunk.css",
-    "static/js/main.9c9157c3.chunk.js"
+    "static/js/2.307d97b4.chunk.js",
+    "static/css/main.7c1a7819.chunk.css",
+    "static/js/main.bd246469.chunk.js"
   ]
 }

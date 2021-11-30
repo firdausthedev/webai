@@ -1,2 +1,0 @@
-(this.webpackJsonpwebai=this.webpackJsonpwebai||[]).push([[0],{4:function(e,t,n){"use strict";n.r(t);var c=n(0),i=n.n(c),s=n(3),o=n.n(s),r=(n(9),n(2));o.a.render(Object(r.jsx)(i.a.StrictMode,{children:Object(r.jsx)("p",{class:"title",children:"In development"})}),document.getElementById("root"))},9:function(e,t,n){}},[[4,1,2]]]);
-//# sourceMappingURL=main.9c9157c3.chunk.js.map
