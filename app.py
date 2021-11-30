@@ -1,32 +1,28 @@
-import os
-
 from flask import Flask
 from flask_restful import Api
-from flask_jwt import JWT
+from flask_cors import CORS
+from flask_wtf.csrf import CSRFProtect
+from resources.SinglePredict import SinglePredict
+from resources.MultiPredict import MultiPredict
+from resources.SingleUpload import SingleUpload
+from resources.MultiUpload import MultiUpload
+import os
 
-from security import authenticate, identity
-from resources.user import UserRegister
-from resources.item import Item, ItemList
-from resources.store import Store, StoreList
-
+SECRET_KEY = os.urandom(32)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL', 'sqlite:///data.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['PROPAGATE_EXCEPTIONS'] = True
-app.secret_key = 'jose'
 api = Api(app)
+CORS(app)
+csrf = CSRFProtect(app)
+app.config['SECRET_KEY'] = SECRET_KEY
+app.config['CORS_HEADERS'] = 'Content-Type'
 
+api.add_resource(SinglePredict, '/prediction/<string:name>')
+api.add_resource(MultiPredict, '/prediction/multi/<string:timestamp>')
+api.add_resource(SingleUpload, '/upload/single')
+api.add_resource(MultiUpload, '/upload/multi')
+app.config.from_mapping({'WTF_CSRF_ENABLED': False})
 
-jwt = JWT(app, authenticate, identity)  # /auth
-
-api.add_resource(Store, '/store/<string:name>')
-api.add_resource(StoreList, '/stores')
-api.add_resource(Item, '/item/<string:name>')
-api.add_resource(ItemList, '/items')
-api.add_resource(UserRegister, '/register')
 
 if __name__ == '__main__':
-    from db import db
-    db.init_app(app)
+    csrf.init_app(app)
     app.run(port=5000, debug=True)
