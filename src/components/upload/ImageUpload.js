@@ -3,9 +3,21 @@ import styled from "styled-components";
 
 function ImageUpload() {
   const [model, setModel] = useState("knife");
+  const [file, setFile] = useState(null);
+
+  const hiddenFileInput = React.useRef(null);
+
+  const onFileClick = (e) => {
+    hiddenFileInput.current.click();
+  };
 
   const modelFunc = (name) => {
     setModel(name);
+  };
+
+  const fileChange = (event) => {
+    const fileUploaded = event.target.files[0];
+    setFile(fileUploaded);
   };
 
   return (
@@ -35,7 +47,16 @@ function ImageUpload() {
         <a a href='#' rel='noopener noreferrer' target='_blank'>
           My Uploads
         </a>
-        <div className='upload-box'>
+        <div className='upload-box' onClick={onFileClick}>
+          <input
+            id='file-upload'
+            type='file'
+            name='file'
+            accept='image/*'
+            style={{ display: "none" }}
+            ref={hiddenFileInput}
+            onChange={fileChange}
+          />
           <div>
             <p>DROP IMAGE HERE</p>
             <p>Accepting png, jpg and jpeg files.</p>
