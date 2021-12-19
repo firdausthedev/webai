@@ -1,25 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ImageUpload = () => {
+function ImageUpload() {
+  const [model, setModel] = useState("knife");
+
+  const modelFunc = (name) => {
+    setModel(name);
+  };
+
   return (
     <Upload>
       <div className='image-select'>
         <p>Select Model</p>
         <a
-          className='active'
-          a
-          href='#'
-          rel='noopener noreferrer'
-          target='_blank'
+          onClick={() => modelFunc("knife")}
+          className={model === "knife" ? "active" : ""}
         >
-          Axe model
-        </a>
-        <a a href='#' rel='noopener noreferrer' target='_blank'>
           Knife model
         </a>
-        <a a href='#' rel='noopener noreferrer' target='_blank'>
-          Wrench model
+        <a
+          onClick={() => modelFunc("scissor")}
+          className={model === "scissor" ? "active" : ""}
+        >
+          Scissor model
+        </a>
+        <a
+          onClick={() => modelFunc("model")}
+          className={model === "model" ? "active" : ""}
+        >
+          Upload model +
         </a>
       </div>
       <div className='image-upload'>
@@ -35,7 +44,7 @@ const ImageUpload = () => {
       </div>
     </Upload>
   );
-};
+}
 
 const Upload = styled.div`
   max-width: 1100px;
