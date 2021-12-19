@@ -8,16 +8,23 @@ function ImageUpload() {
   const hiddenFileInput = React.useRef(null);
 
   const onFileClick = (e) => {
-    hiddenFileInput.current.click();
+    if (file == null) {
+      hiddenFileInput.current.click();
+    }
   };
 
   const modelFunc = (name) => {
     setModel(name);
   };
 
-  const fileChange = (event) => {
-    const fileUploaded = event.target.files[0];
-    setFile(fileUploaded);
+  const fileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const onClearClick = (e) => {
+    setFile(null);
   };
 
   return (
@@ -44,9 +51,7 @@ function ImageUpload() {
         </a>
       </div>
       <div className='image-upload'>
-        <a a href='#' rel='noopener noreferrer' target='_blank'>
-          My Uploads
-        </a>
+        <a>My Uploads</a>
         <div className='upload-box' onClick={onFileClick}>
           <input
             id='file-upload'
@@ -56,10 +61,26 @@ function ImageUpload() {
             style={{ display: "none" }}
             ref={hiddenFileInput}
             onChange={fileChange}
+            onClick={(event) => {
+              event.target.value = null;
+            }}
           />
           <div>
-            <p>DROP IMAGE HERE</p>
-            <p>Accepting png, jpg and jpeg files.</p>
+            {file == null ? (
+              <div className='upload-info'>
+                <p>UPLOAD IMAGE HERE</p>
+                <p>Accepting png, jpg and jpeg files.</p>
+              </div>
+            ) : (
+              <div className='upload-image'>
+                <img src={URL.createObjectURL(file)} />
+                <p></p>
+                <div className='upload-image-btns'>
+                  <a onClick={onClearClick}>Clear</a>
+                  <a>Upload</a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -158,6 +179,29 @@ const Upload = styled.div`
     }
     p:last-child {
       font-size: 0.8rem;
+    }
+  }
+  .upload-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 150px;
+      border-radius: 10px;
+    }
+    .upload-image-btns {
+      display: flex;
+      margin-top: 15px;
+
+      a:first-child {
+        background: #ff5151;
+        margin-right: 20px;
+      }
+      a:last-child {
+        background: #77d970;
+      }
     }
   }
 `;
