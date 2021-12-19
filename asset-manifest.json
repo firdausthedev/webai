@@ -1,20 +1,13 @@
 {
-  "files": {
-    "main.css": "/webai/static/css/main.7c1a7819.chunk.css",
-    "main.js": "/webai/static/js/main.b22535ba.chunk.js",
-    "main.js.map": "/webai/static/js/main.b22535ba.chunk.js.map",
-    "runtime-main.js": "/webai/static/js/runtime-main.c7fb6ef6.js",
-    "runtime-main.js.map": "/webai/static/js/runtime-main.c7fb6ef6.js.map",
-    "static/js/2.0a9e3441.chunk.js": "/webai/static/js/2.0a9e3441.chunk.js",
-    "static/js/2.0a9e3441.chunk.js.map": "/webai/static/js/2.0a9e3441.chunk.js.map",
-    "index.html": "/webai/index.html",
-    "static/css/main.7c1a7819.chunk.css.map": "/webai/static/css/main.7c1a7819.chunk.css.map",
-    "static/js/2.0a9e3441.chunk.js.LICENSE.txt": "/webai/static/js/2.0a9e3441.chunk.js.LICENSE.txt"
-  },
-  "entrypoints": [
-    "static/js/runtime-main.c7fb6ef6.js",
-    "static/js/2.0a9e3441.chunk.js",
-    "static/css/main.7c1a7819.chunk.css",
-    "static/js/main.b22535ba.chunk.js"
-  ]
+  "main.css": "/webai/static/css/main.640becdc.chunk.css",
+  "main.js": "/webai/static/js/main.957b9a78.chunk.js",
+  "main.js.map": "/webai/static/js/main.957b9a78.chunk.js.map",
+  "runtime~main.js": "/webai/static/js/runtime~main.b270b7e5.js",
+  "runtime~main.js.map": "/webai/static/js/runtime~main.b270b7e5.js.map",
+  "static/js/2.e5288514.chunk.js": "/webai/static/js/2.e5288514.chunk.js",
+  "static/js/2.e5288514.chunk.js.map": "/webai/static/js/2.e5288514.chunk.js.map",
+  "index.html": "/webai/index.html",
+  "precache-manifest.bc9892fb3eb2c7fa5436c0f9ed7aa622.js": "/webai/precache-manifest.bc9892fb3eb2c7fa5436c0f9ed7aa622.js",
+  "service-worker.js": "/webai/service-worker.js",
+  "static/css/main.640becdc.chunk.css.map": "/webai/static/css/main.640becdc.chunk.css.map"
 }
