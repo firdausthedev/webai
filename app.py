@@ -26,4 +26,4 @@ if __name__ == '__main__':
     csrf.init_app(app)
     app.run(port=5000, debug=True)
 
-flask_cors.CORS(app, expose_headers='Authorization')
+# flask_cors.CORS(app, expose_headers='Authorization')
