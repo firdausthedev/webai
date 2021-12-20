@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { ReactComponent as Logo } from "../../img/upload.svg";
 
 function ImageUpload() {
   const [model, setModel] = useState(["man", "woman"]);
@@ -9,10 +10,13 @@ function ImageUpload() {
   const [pred, setPred] = useState(0.0);
   const [isModel, setIsModel] = useState(true);
   const [error, setError] = useState(false);
+  const [cModel, setCModel] = useState("");
 
   const hiddenFileInput = React.useRef(null);
+  const hiddenUploadInput = React.useRef(null);
 
-  const currentURL = "https://firdausthedev-webai.herokuapp.com";
+  // const currentURL = "https://firdausthedev-webai.herokuapp.com";
+  const currentURL = "http://127.0.0.1:5000";
 
   const onFileClick = (e) => {
     if (file == null) {
@@ -30,6 +34,7 @@ function ImageUpload() {
     }
   };
 
+  // Display error for 3s
   const errorHandle = () => {
     setError(true);
     const timer = setTimeout(() => {
@@ -92,6 +97,36 @@ function ImageUpload() {
     setFile(null);
   };
 
+  // When user click custom model btn
+  const onCModelClick = (e) => {
+    if (file == null) {
+      hiddenUploadInput.current.click();
+    }
+  };
+
+  // changes in custom model input
+  const uploadChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const cModel = e.target.files[0];
+
+      const formData = new FormData();
+      formData.append("file", cModel);
+      formData.append("filename", cModel.name);
+
+      fetch(currentURL + "/uploadcmodel", {
+        method: "POST",
+        body: formData,
+      }).then((response) => {
+        response.json().then((body) => {
+          if (!body.success) {
+            isLoadPred(false);
+            setFile(null);
+            errorHandle();
+          }
+        });
+      });
+    }
+  };
   return (
     <Upload>
       {error && <p className='error'>Error. Something went wrong</p>}
@@ -117,10 +152,24 @@ function ImageUpload() {
             Cat or Dog
           </a>
           <a
-            onClick={() => modelFunc("model")}
-            className={model === "model" ? "active" : ""}
+            onClick={() => {
+              modelFunc(["custom", "custom2"]);
+              onCModelClick();
+            }}
           >
-            Upload model +
+            Upload model <Logo />
+            <input
+              id='file-upload'
+              type='file'
+              name='file'
+              accept=''
+              style={{ display: "none" }}
+              ref={hiddenUploadInput}
+              onChange={uploadChange}
+              onClick={(event) => {
+                event.target.value = null;
+              }}
+            />
           </a>
         </div>
         <div className='image-upload'>
@@ -146,7 +195,11 @@ function ImageUpload() {
                 </div>
               ) : loadPred == false && showPred == false ? (
                 <div className='upload-image'>
-                  <img src={URL.createObjectURL(file)} />
+                  {model[0] != "model" ? (
+                    <img src={URL.createObjectURL(file)} />
+                  ) : (
+                    <p>{file.name}</p>
+                  )}
                   <p></p>
                   <div className='upload-image-btns'>
                     <a onClick={onClearClick}>Clear</a>
@@ -188,8 +241,10 @@ const Upload = styled.div`
 
     .image-select {
       width: 300px;
+      height: 300px;
       display: flex;
       flex-direction: column;
+      margin-top: 8px;
       color: black;
 
       p {
@@ -208,6 +263,23 @@ const Upload = styled.div`
           transition: 1s;
         }
       }
+
+      a:last-child {
+        background: red;
+        margin-top: 90px;
+        background: black;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        svg {
+          width: 40px;
+          height: 25px;
+          fill: white;
+        }
+      }
+
       a.active {
         background-color: rgba(230, 230, 230, 0.75);
 
@@ -241,19 +313,9 @@ const Upload = styled.div`
     }
   }
   .upload-box {
-    background: #0f2027; /* fallback for old browsers */
-    background: -webkit-linear-gradient(
-      to right,
-      #2c5364,
-      #203a43,
-      #0f2027
-    ); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(
-      to right,
-      #2c5364,
-      #203a43,
-      #0f2027
-    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #0f2027;
+    background: -webkit-linear-gradient(to right, #2c5364, #203a43, #0f2027);
+    background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
 
     color: white;
     height: 300px;
