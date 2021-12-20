@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 from flask_wtf.csrf import CSRFProtect
 
 from resources.UploadImage import UploadImage
+from resources.UploadCModel import UploadCModel
 from resources.PredictImage import PredictImage
 
 import os
@@ -17,6 +18,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 api.add_resource(UploadImage, '/uploadimage')
+api.add_resource(UploadCModel, '/uploadcmodel')
 api.add_resource(PredictImage, '/predictimage/<string:name>/<string:model>')
 
 app.config.from_mapping({'WTF_CSRF_ENABLED': False})
