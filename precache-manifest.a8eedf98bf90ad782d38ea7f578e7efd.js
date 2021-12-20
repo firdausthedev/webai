@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "aa419d0f145e483b97b4",
+    "revision": "fccef4162c636366915a",
     "url": "/webai/static/css/main.640becdc.chunk.css"
   },
   {
-    "revision": "aa419d0f145e483b97b4",
-    "url": "/webai/static/js/main.184ae806.chunk.js"
+    "revision": "fccef4162c636366915a",
+    "url": "/webai/static/js/main.75511cb8.chunk.js"
   },
   {
     "revision": "7c1d02499fccb3591a47",
@@ -16,7 +16,11 @@ self.__precacheManifest = [
     "url": "/webai/static/js/2.bae518c6.chunk.js"
   },
   {
-    "revision": "d9f58be1f282cbd7ad26b203b771a3f4",
+    "revision": "62e88d168f10db5e5b0379a5c161838a",
+    "url": "/webai/static/media/upload.62e88d16.svg"
+  },
+  {
+    "revision": "b4426bdb88d425b213a44846e27edf91",
     "url": "/webai/index.html"
   }
 ];
