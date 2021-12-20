@@ -15,7 +15,6 @@ def stride(img):
     
 def f_prop(input, filters):
 
-      last_input = input
 
       height, weight = input.shape
       output = np.zeros((height - 2, weight - 2, 8))
@@ -27,7 +26,6 @@ def f_prop(input, filters):
 
 def max_f(input):
 
-    last_input = input
 
     height, width, num_filters = input.shape
     output = np.zeros((height // 2, width // 2, num_filters))
@@ -50,12 +48,9 @@ def max_stride(img):
 
 def soft_f(input, weights, biases):
  
-    last_input_shape = input.shape
 
     input = input.flatten()
-    last_input = input
 
-    input_len, nodes = weights.shape
 
     totals = np.dot(input, weights) + biases
     total_last = totals
@@ -82,6 +77,6 @@ class PredictImage(Resource):
         
         return {"success": True, "prob": {
             "model" : out[0],
-            "non-model" : out[1]
+            "model2" : out[1]
             }}, 200 
         

@@ -11,9 +11,12 @@ def allowed_file(filename):
 
 class UploadImage(Resource):
     def post(self):
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join('upload', filename))
-        return {"success": True, "filename": filename}, 200
+        try:
+            file = request.files['file']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join('upload', filename))
+            return {"success": True, "filename": filename}, 200
+        except:
+            return {"success": False, "message": "Something went wrong"}, 406
         
