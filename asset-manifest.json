@@ -1,13 +1,13 @@
 {
   "main.css": "/webai/static/css/main.640becdc.chunk.css",
-  "main.js": "/webai/static/js/main.3b62a52c.chunk.js",
-  "main.js.map": "/webai/static/js/main.3b62a52c.chunk.js.map",
+  "main.js": "/webai/static/js/main.184ae806.chunk.js",
+  "main.js.map": "/webai/static/js/main.184ae806.chunk.js.map",
   "runtime~main.js": "/webai/static/js/runtime~main.b270b7e5.js",
   "runtime~main.js.map": "/webai/static/js/runtime~main.b270b7e5.js.map",
   "static/js/2.bae518c6.chunk.js": "/webai/static/js/2.bae518c6.chunk.js",
   "static/js/2.bae518c6.chunk.js.map": "/webai/static/js/2.bae518c6.chunk.js.map",
   "index.html": "/webai/index.html",
-  "precache-manifest.4a95316571f2cfcf8ce6ec7990486174.js": "/webai/precache-manifest.4a95316571f2cfcf8ce6ec7990486174.js",
+  "precache-manifest.06b8f64e7a1473005c010257469d9d85.js": "/webai/precache-manifest.06b8f64e7a1473005c010257469d9d85.js",
   "service-worker.js": "/webai/service-worker.js",
   "static/css/main.640becdc.chunk.css.map": "/webai/static/css/main.640becdc.chunk.css.map"
 }
