@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 function ImageUpload() {
-  const [model, setModel] = useState("knife");
+  const [model, setModel] = useState(["man", "woman"]);
   const [file, setFile] = useState(null);
   const [loadPred, isLoadPred] = useState(false);
   const [showPred, setShowPred] = useState(false);
   const [pred, setPred] = useState(0.0);
+  const [isModel, setIsModel] = useState(true);
+  const [error, setError] = useState(false);
 
   const hiddenFileInput = React.useRef(null);
+
+  const currentURL = "https://firdausthedev-webai.herokuapp.com";
 
   const onFileClick = (e) => {
     if (file == null) {
@@ -16,14 +20,21 @@ function ImageUpload() {
     }
   };
 
-  const modelFunc = (name) => {
-    setModel(name);
+  const modelFunc = (mod) => {
+    if (!showPred) setModel(mod);
   };
 
   const fileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
+  };
+
+  const errorHandle = () => {
+    setError(true);
+    const timer = setTimeout(() => {
+      setError(false);
+    }, 3000);
   };
 
   // When user click clear btn
@@ -37,30 +48,39 @@ function ImageUpload() {
     formData.append("file", file);
     formData.append("filename", file.name);
     isLoadPred(true);
-    fetch("https://firdausthedev-webai.herokuapp.com/uploadimage", {
+    fetch(currentURL + "/uploadimage", {
       method: "POST",
       body: formData,
     }).then((response) => {
       response.json().then((body) => {
         const res = body.filename;
-        fetch(
-          "https://firdausthedev-webai.herokuapp.com/predictimage/" +
-            res +
-            "/" +
-            model +
-            ".pkl",
-          {
+        console.log(body);
+        if (body.success == true) {
+          fetch(currentURL + "/predictimage/" + res + "/" + model[0] + ".pkl", {
             method: "GET",
-          }
-        ).then((response) => {
-          response.json().then((body) => {
-            const res = body.prob.model;
-            isLoadPred(false);
-            setShowPred(true);
-            setPred(res);
-            console.log(res);
+          }).then((response) => {
+            response.json().then((body) => {
+              const res = body.prob.model;
+              const res2 = body.prob.model2;
+              console.log(body.prob);
+              if (res > res2) {
+                setPred(res);
+                setIsModel(true);
+              } else {
+                setPred(res2);
+                setIsModel(false);
+              }
+              isLoadPred(false);
+              setShowPred(true);
+              // setPred(res);
+              console.log(res);
+            });
           });
-        });
+        } else {
+          isLoadPred(false);
+          setFile(null);
+          errorHandle();
+        }
       });
     });
   };
@@ -74,71 +94,81 @@ function ImageUpload() {
 
   return (
     <Upload>
-      <div className='image-select'>
-        <p>Select Model</p>
-        <a
-          onClick={() => modelFunc("knife")}
-          className={model === "knife" ? "active" : ""}
-        >
-          Knife model
-        </a>
-        <a
-          onClick={() => modelFunc("scissor")}
-          className={model === "scissor" ? "active" : ""}
-        >
-          Scissor model
-        </a>
-        <a
-          onClick={() => modelFunc("model")}
-          className={model === "model" ? "active" : ""}
-        >
-          Upload model +
-        </a>
-      </div>
-      <div className='image-upload'>
-        <a>My Uploads</a>
-        <div className='upload-box' onClick={onFileClick}>
-          <input
-            id='file-upload'
-            type='file'
-            name='file'
-            accept='image/*'
-            style={{ display: "none" }}
-            ref={hiddenFileInput}
-            onChange={fileChange}
-            onClick={(event) => {
-              event.target.value = null;
-            }}
-          />
-          <div>
-            {file == null ? (
-              <div className='upload-info'>
-                <p>UPLOAD IMAGE HERE</p>
-                <p>Accepting image files such as png, jpg and jpeg.</p>
-              </div>
-            ) : loadPred == false && showPred == false ? (
-              <div className='upload-image'>
-                <img src={URL.createObjectURL(file)} />
-                <p></p>
-                <div className='upload-image-btns'>
-                  <a onClick={onClearClick}>Clear</a>
-                  <a onClick={onUploadClick}>Upload</a>
+      {error && <p className='error'>Error. Something went wrong</p>}
+      <div className='main-upload'>
+        <div className='image-select'>
+          <p>Select Model</p>
+          <a
+            onClick={() => modelFunc(["man", "woman"])}
+            className={model[0] == "man" ? "active" : ""}
+          >
+            Man or Woman
+          </a>
+          <a
+            onClick={() => modelFunc(["knife", "scissor"])}
+            className={model[0] === "knife" ? "active" : ""}
+          >
+            Knife or Scissor
+          </a>
+          <a
+            onClick={() => modelFunc(["cat", "dog"])}
+            className={model[0] === "cat" ? "active" : ""}
+          >
+            Cat or Dog
+          </a>
+          <a
+            onClick={() => modelFunc("model")}
+            className={model === "model" ? "active" : ""}
+          >
+            Upload model +
+          </a>
+        </div>
+        <div className='image-upload'>
+          <a>My Uploads</a>
+          <div className='upload-box' onClick={onFileClick}>
+            <input
+              id='file-upload'
+              type='file'
+              name='file'
+              accept='image/*'
+              style={{ display: "none" }}
+              ref={hiddenFileInput}
+              onChange={fileChange}
+              onClick={(event) => {
+                event.target.value = null;
+              }}
+            />
+            <div>
+              {file == null ? (
+                <div className='upload-info'>
+                  <p>UPLOAD IMAGE HERE</p>
+                  <p>Accepting image files such as png, jpg and jpeg.</p>
                 </div>
-              </div>
-            ) : loadPred ? (
-              <div className='upload-loading'>
-                {/* <img src={URL.createObjectURL(file)} /> */}
-                <p>Loading...</p>
-              </div>
-            ) : (
-              <div className='upload-predict'>
-                <p>
-                  Prediction: {(pred * 100).toFixed(2)}% {model}
-                </p>
-                <img src={URL.createObjectURL(file)} />
-                <a onClick={onClosePred}>Close</a>
-              </div>
-            )}
+              ) : loadPred == false && showPred == false ? (
+                <div className='upload-image'>
+                  <img src={URL.createObjectURL(file)} />
+                  <p></p>
+                  <div className='upload-image-btns'>
+                    <a onClick={onClearClick}>Clear</a>
+                    <a onClick={onUploadClick}>Upload</a>
+                  </div>
+                </div>
+              ) : loadPred ? (
+                <div className='upload-loading'>
+                  {/* <img src={URL.createObjectURL(file)} /> */}
+                  <p>Loading...</p>
+                </div>
+              ) : (
+                <div className='upload-predict'>
+                  <p>
+                    Prediction: {(pred * 100).toFixed(2)}%{" "}
+                    {isModel ? model[0] : model[1]}
+                  </p>
+                  <img src={URL.createObjectURL(file)} />
+                  <a onClick={onClosePred}>Close</a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -147,40 +177,45 @@ function ImageUpload() {
 }
 
 const Upload = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 1100px;
   margin: auto;
-  margin-top: 4rem;
-  display: flex;
 
-  .image-select {
-    width: 300px;
+  .main-upload {
     display: flex;
-    flex-direction: column;
-    color: black;
+    margin-top: 2rem;
 
-    p {
-      font-weight: bolder;
-      margin-bottom: 1rem;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-      padding: 1rem 0.5rem;
-      border-radius: 10px;
+    .image-select {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      color: black;
 
-      &:hover {
-        background: black;
-        color: white;
-        transition: 1s;
+      p {
+        font-weight: bolder;
+        margin-bottom: 1rem;
       }
-    }
-    a.active {
-      background-color: rgba(230, 230, 230, 0.75);
+      a {
+        text-decoration: none;
+        color: inherit;
+        padding: 1rem 0.5rem;
+        border-radius: 10px;
 
-      &:hover {
-        background: black;
-        color: white;
-        transition: 1s;
+        &:hover {
+          background: black;
+          color: white;
+          transition: 1s;
+        }
+      }
+      a.active {
+        background-color: rgba(230, 230, 230, 0.75);
+
+        &:hover {
+          background: black;
+          color: white;
+          transition: 1s;
+        }
       }
     }
   }
@@ -247,6 +282,7 @@ const Upload = styled.div`
 
     img {
       width: 150px;
+      height: 150px;
       border-radius: 10px;
     }
     .upload-image-btns {
@@ -272,12 +308,22 @@ const Upload = styled.div`
     }
     img {
       width: 150px;
+      height: 150px;
       border-radius: 10px;
     }
     a {
       align-self: center;
       margin-top: 15px;
     }
+  }
+
+  .error {
+    display: block;
+    border: 1px solid #ff5151;
+    padding: 0.5rem 0.8rem;
+    text-align: center;
+    color: #ff5151;
+    border-radius: 5px;
   }
 `;
 
