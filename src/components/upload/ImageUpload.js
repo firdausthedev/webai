@@ -15,8 +15,8 @@ function ImageUpload() {
   const hiddenFileInput = React.useRef(null);
   const hiddenUploadInput = React.useRef(null);
 
-  // const currentURL = "https://firdausthedev-webai.herokuapp.com";
-  const currentURL = "http://127.0.0.1:5000";
+  const currentURL = "https://firdausthedev-webai.herokuapp.com";
+  // const currentURL = "http://127.0.0.1:5000";
 
   const onFileClick = (e) => {
     if (file == null) {
