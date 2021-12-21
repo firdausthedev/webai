@@ -1,21 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-const Navbar = () => {
+const Navbar = ({ showModelFunc, showModelUpload }) => {
   return (
     <NavContainer id='navbar'>
       <Nav>
         <div className='title-wrapper'>
           <h2>ImageAI</h2>
-          <a a href='#' rel='noopener noreferrer' target='_blank'>
-            Upload Model
+          <a onClick={() => showModelFunc(showModelUpload)}>
+            {!showModelUpload ? "Create" : "Test"} Model
           </a>
         </div>
         <ul>
           <li>
-            <a href='#' rel='noopener noreferrer' target='_blank'>
-              Help
-            </a>
+            <a>Help</a>
           </li>
         </ul>
       </Nav>

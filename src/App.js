@@ -1,13 +1,26 @@
-import React from "react";
-import "./App.css";
+import React, { useState } from "react";
 import Navbar from "./components/layout/Navbar";
 import ImageUpload from "./components/upload/ImageUpload";
+import ModelUpload from "./components/upload/ModelUpload";
 
 const App = () => {
+  const [showModelUpload, setModelUpload] = useState(true);
+
+  const setModelUploadFunc = (isSelected) => {
+    setModelUpload(!isSelected);
+  };
+
   return (
     <div>
-      <Navbar />
-      <ImageUpload />
+      <Navbar
+        showModelFunc={setModelUploadFunc}
+        showModelUpload={showModelUpload}
+      />
+      {showModelUpload ? (
+        <ModelUpload showModelFunc={setModelUploadFunc} />
+      ) : (
+        <ImageUpload />
+      )}
     </div>
   );
 };
