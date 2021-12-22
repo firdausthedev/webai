@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../img/upload.svg";
+import UploadHistory from "./UploadHistory";
 
 function ImageUpload() {
   const [model, setModel] = useState(["man", "woman"]);
@@ -10,13 +11,30 @@ function ImageUpload() {
   const [pred, setPred] = useState(0.0);
   const [isModel, setIsModel] = useState(true);
   const [error, setError] = useState(false);
-  const [cModel, setCModel] = useState("");
+  const [showHistory, setShowHistory] = useState(false);
 
   const hiddenFileInput = React.useRef(null);
   const hiddenUploadInput = React.useRef(null);
 
+  // load prediction list from local storage
+  const getSavedList = () => {
+    const list = JSON.parse(localStorage.getItem("list"));
+    return list || [];
+  };
+
+  const [predList, setPredList] = useState(getSavedList());
+
   const currentURL = "https://firdausthedev-webai.herokuapp.com";
   // const currentURL = "http://127.0.0.1:5000";
+
+  useEffect(() => {
+    setPredListFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [predList]);
+
+  const setPredListFunc = () => {
+    localStorage.setItem("list", JSON.stringify(predList));
+  };
 
   const onFileClick = (e) => {
     if (file == null) {
@@ -70,13 +88,17 @@ function ImageUpload() {
               console.log(body.prob);
               if (res > res2) {
                 setPred(res);
+                updatePredList(res, model[0]);
                 setIsModel(true);
               } else {
                 setPred(res2);
+                updatePredList(res2, model[1]);
                 setIsModel(false);
               }
+
               isLoadPred(false);
               setShowPred(true);
+
               // setPred(res);
               console.log(res);
             });
@@ -127,9 +149,32 @@ function ImageUpload() {
       });
     }
   };
+
+  // When user click upload history
+  const showHistoryFunc = (isSelected) => {
+    setShowHistory(!isSelected);
+  };
+
+  const updatePredList = (res, model) => {
+    const newPredList = [...predList];
+    newPredList.push({
+      model: model,
+      pred: res,
+      file: file.name,
+    });
+    setPredList(newPredList);
+    setPredListFunc();
+  };
+
   return (
     <Upload>
-      {console.log(model)}
+      {showHistory && (
+        <UploadHistory
+          showHistoryFunc={showHistoryFunc}
+          showHistory={showHistory}
+          predList={predList}
+        />
+      )}
       {error && <p className='error'>Error. Something went wrong</p>}
       <div className='main-upload'>
         <div className='image-select'>
@@ -178,7 +223,7 @@ function ImageUpload() {
           </a>
         </div>
         <div className='image-upload'>
-          <a>My Uploads</a>
+          <a onClick={() => showHistoryFunc(showHistory)}>My Uploads</a>
           <div className='upload-box' onClick={onFileClick}>
             <input
               id='file-upload'
@@ -220,7 +265,9 @@ function ImageUpload() {
                 <div className='upload-predict'>
                   <p>
                     Prediction: {(pred * 100).toFixed(2)}%{" "}
-                    {isModel ? model[0] : model[1]}
+                    <span className='prediction'>
+                      {isModel ? model[0] : model[1]}
+                    </span>
                   </p>
                   <img src={URL.createObjectURL(file)} />
                   <a onClick={onClosePred}>Close</a>
@@ -400,6 +447,10 @@ const Upload = styled.div`
     text-align: center;
     color: #ff5151;
     border-radius: 5px;
+  }
+
+  .prediction {
+    text-transform: capitalize;
   }
 `;
 
