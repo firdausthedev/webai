@@ -5,6 +5,7 @@ from flask_wtf.csrf import CSRFProtect
 
 from resources.UploadImage import UploadImage
 from resources.TrainModel import TrainModel
+from resources.DownloadModel import DownloadModel
 from resources.UploadFile import UploadFile
 from resources.UploadCModel import UploadCModel
 from resources.PredictImage import PredictImage
@@ -24,6 +25,7 @@ api.add_resource(UploadFile, '/uploadfile')
 api.add_resource(UploadCModel, '/uploadcmodel')
 api.add_resource(PredictImage, '/predictimage/<string:name>/<string:model>')
 api.add_resource(TrainModel, '/trainmodel/<string:model1>/<string:model2>')
+api.add_resource(DownloadModel, '/getmodel/<string:model>')
 
 app.config.from_mapping({'WTF_CSRF_ENABLED': False})
 

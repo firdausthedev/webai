@@ -22,7 +22,7 @@ def extractZip (model1, model2):
     os.remove("dataset/"+model2)
 
 # split into train and test folder    
-def split_folder(dataset, indexFolder):
+def split_folder(dataset, indexFolder, x, y, xt, yt):
     source_dir = 'dataset/' + dataset
     target_train_dir = "dataset/" + dataset +"/train_set"
     target_test_dir = "dataset/" + dataset +"/test_set"
@@ -48,33 +48,38 @@ def split_folder(dataset, indexFolder):
           shutil.move(os.path.join(source_dir, file_name), target_train_dir)
           img = Image.open(target_train_dir +"/" + file_name).convert('L')
           img = img.resize((28,28))
-          x_train.append(asarray(img))
+          x.append(asarray(img))
           if (indexFolder == 0):
-            y_train.append(0)
+            y.append(0)
           else:
-            y_train.append(1)
+            y.append(1)
         else :
           shutil.move(os.path.join(source_dir, file_name), target_test_dir)
           img = Image.open(target_test_dir +"/" + file_name).convert('L')
           img = img.resize((28,28))
-          x_test.append(asarray(img))
+          xt.append(asarray(img))
           if (indexFolder == 0):
-            y_test.append(0)
+            yt.append(0)
           else:
-            y_test.append(1)
+            yt.append(1)
 
-x_train = []
-y_train = []
-x_test = []
-y_test = []
+
 
 
 
 class TrainModel(Resource):
     def get(self, model1, model2):
         
+        x_train = []
+        y_train = []
+        x_test = []
+        y_test = []
+      
         # extract files
-        extractZip(model1, model2)
+        try:
+            extractZip(model1, model2) 
+        except:
+            return {"success": False, "message": "Something went wrong"}, 406
         
         # get list of names
         folder_list = os.listdir("dataset/")
@@ -83,33 +88,21 @@ class TrainModel(Resource):
             os.makedirs("dataset/" + folder +"/train_set")
             os.makedirs("dataset/" + folder +"/test_set")
         
-        
+        try:
+            for index, folder in enumerate(folder_list):
+                split_folder(folder, index, x_train, y_train, x_test, y_test)
+        except :
+            return {"success": False, "message": "Something went wrong"}, 406
         # split folder into training and test set
-        for index, folder in enumerate(folder_list):
-             split_folder(folder, index)
-        
-        # print(y_test)
+      
+     
         
         # convert labels into numpy array
-        # print(y_train)
         nx_train = np.asarray(x_train)
         ny_train = np.asarray(y_train)
-        # print(ny_train)
         nx_test = np.asarray(x_test)
         ny_test = np.asarray(y_test)
         
-        # print(ny_train)
-        
-        # shuffle train and test labels
-        
-        # permutation = np.random.permutation(len(nx_test))
-        # nx_test = nx_test[permutation]
-        # ny_test= ny_test[permutation]
-        # print(len(nx_train))
-        # print(nx_train.ndim)
-        # # print(ny_train)
-        # print(nx_train[0].ndim)
-        # print(nx_train[0].shape)
 
         conv = Convolution(8)                  
         pool = MaxPooling()                  
@@ -139,7 +132,7 @@ class TrainModel(Resource):
         
       
         # cnn.accurate_test(nx_test, ny_test)
-        for epoch in range(1):
+        for epoch in range(11):
           print('--- Epoch %d ---' % (epoch + 1))
           
           #shuffle the train and test list
@@ -164,8 +157,12 @@ class TrainModel(Resource):
         pickle.dump( saved_list , open( 'trained_model/trained.pkl' , 'wb' ) )
 
         print(saved_list)
-        # delete dataset
+        # delete dataset after finish training
         for index, folder in enumerate(folder_list):
             shutil.rmtree("dataset/" + folder)
         
-        return {"success": True, "filename": 'dwd'}, 200
+        print(len(nx_train))
+        return {"success": True, "filename": "trained"}, 200
+      
+        
+        
