@@ -81,6 +81,9 @@ class TrainModel(Resource):
         except:
             return {"success": False, "message": "Something went wrong"}, 406
         
+                
+        os.remove("dataset/.gitignore")
+        
         # get list of names
         folder_list = os.listdir("dataset/")
         
