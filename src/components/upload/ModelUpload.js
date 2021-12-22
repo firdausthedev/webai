@@ -16,7 +16,7 @@ function ModelUpload({ showModelFunc }) {
   const hiddenFile2Input = React.useRef(null);
 
   const currentURL = "https://firdausthedev-webai.herokuapp.com";
-  //   const currentURL = "http://127.0.0.1:5000";
+  // const currentURL = "http://127.0.0.1:5000";
 
   const fileChange = (file, e) => {
     if (file === "1") {

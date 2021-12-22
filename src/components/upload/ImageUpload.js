@@ -129,6 +129,7 @@ function ImageUpload() {
   };
   return (
     <Upload>
+      {console.log(model)}
       {error && <p className='error'>Error. Something went wrong</p>}
       <div className='main-upload'>
         <div className='image-select'>
@@ -138,18 +139,21 @@ function ImageUpload() {
             className={model[0] == "man" ? "active" : ""}
           >
             Man or Woman
+            {model[0] == "man" && <span>Selected</span>}
           </a>
           <a
             onClick={() => modelFunc(["knife", "scissor"])}
             className={model[0] === "knife" ? "active" : ""}
           >
             Knife or Scissor
+            {model[0] == "knife" && <span>Selected</span>}
           </a>
           <a
             onClick={() => modelFunc(["cat", "dog"])}
             className={model[0] === "cat" ? "active" : ""}
           >
             Cat or Dog
+            {model[0] == "cat" && <span>Selected</span>}
           </a>
           <a
             onClick={() => {
@@ -157,7 +161,8 @@ function ImageUpload() {
               onCModelClick();
             }}
           >
-            Upload model <Logo />
+            Upload model{" "}
+            {model[0] == "custom" ? <span>Selected</span> : <Logo />}
             <input
               id='file-upload'
               type='file'
@@ -254,13 +259,22 @@ const Upload = styled.div`
       a {
         text-decoration: none;
         color: inherit;
-        padding: 1rem 0.5rem;
+        padding: 1rem 0.8rem;
         border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
         &:hover {
           background: black;
           color: white;
           transition: 1s;
+        }
+
+        span {
+          font-size: 0.72rem;
+          font-weight: bold;
+          justify-self: flex-end;
         }
       }
 
@@ -281,7 +295,7 @@ const Upload = styled.div`
       }
 
       a.active {
-        background-color: rgba(230, 230, 230, 0.75);
+        background-color: rgba(0, 0, 0, 0.05);
 
         &:hover {
           background: black;
