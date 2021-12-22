@@ -1,14 +1,15 @@
 {
-  "main.css": "/webai/static/css/main.640becdc.chunk.css",
-  "main.js": "/webai/static/js/main.75511cb8.chunk.js",
-  "main.js.map": "/webai/static/js/main.75511cb8.chunk.js.map",
+  "main.css": "/webai/static/css/main.37197044.chunk.css",
+  "main.js": "/webai/static/js/main.3619d9ea.chunk.js",
+  "main.js.map": "/webai/static/js/main.3619d9ea.chunk.js.map",
   "runtime~main.js": "/webai/static/js/runtime~main.b270b7e5.js",
   "runtime~main.js.map": "/webai/static/js/runtime~main.b270b7e5.js.map",
-  "static/js/2.bae518c6.chunk.js": "/webai/static/js/2.bae518c6.chunk.js",
-  "static/js/2.bae518c6.chunk.js.map": "/webai/static/js/2.bae518c6.chunk.js.map",
+  "static/js/2.1909254a.chunk.js": "/webai/static/js/2.1909254a.chunk.js",
+  "static/js/2.1909254a.chunk.js.map": "/webai/static/js/2.1909254a.chunk.js.map",
   "index.html": "/webai/index.html",
-  "precache-manifest.a8eedf98bf90ad782d38ea7f578e7efd.js": "/webai/precache-manifest.a8eedf98bf90ad782d38ea7f578e7efd.js",
+  "precache-manifest.12e226fd982ec8816fa651afaebb7950.js": "/webai/precache-manifest.12e226fd982ec8816fa651afaebb7950.js",
   "service-worker.js": "/webai/service-worker.js",
-  "static/css/main.640becdc.chunk.css.map": "/webai/static/css/main.640becdc.chunk.css.map",
-  "static/media/upload.62e88d16.svg": "/webai/static/media/upload.62e88d16.svg"
+  "static/css/main.37197044.chunk.css.map": "/webai/static/css/main.37197044.chunk.css.map",
+  "static/media/upload.62e88d16.svg": "/webai/static/media/upload.62e88d16.svg",
+  "static/media/zip.76ec1249.svg": "/webai/static/media/zip.76ec1249.svg"
 }
