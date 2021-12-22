@@ -4,7 +4,7 @@ import ImageUpload from "./components/upload/ImageUpload";
 import ModelUpload from "./components/upload/ModelUpload";
 
 const App = () => {
-  const [showModelUpload, setModelUpload] = useState(true);
+  const [showModelUpload, setModelUpload] = useState(false);
 
   const setModelUploadFunc = (isSelected) => {
     setModelUpload(!isSelected);
