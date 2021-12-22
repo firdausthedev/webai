@@ -8,12 +8,15 @@ function ModelUpload({ showModelFunc }) {
   const [file1Loaded, isFile1Loaded] = useState(false);
   const [file2Loaded, isFile2Loaded] = useState(false);
   const [loading, isLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [training, isTraining] = useState(false);
+  const [dModelName, setDModelName] = useState(null);
 
   const hiddenFile1Input = React.useRef(null);
   const hiddenFile2Input = React.useRef(null);
 
-  // const currentURL = "https://firdausthedev-webai.herokuapp.com";
-  const currentURL = "http://127.0.0.1:5000";
+  const currentURL = "https://firdausthedev-webai.herokuapp.com";
+  //   const currentURL = "http://127.0.0.1:5000";
 
   const fileChange = (file, e) => {
     if (file === "1") {
@@ -51,10 +54,25 @@ function ModelUpload({ showModelFunc }) {
         const res = body.filename;
         if (body.success) {
           if (file === "1") isFile1Loaded(true);
-          if (file === "2") isFile2Loaded(true);
+          if (file === "2") {
+            isFile2Loaded(true);
+            isTraining(false);
+            fetch(currentURL + "/trainmodel/" + file1.name + "/" + file2.name, {
+              method: "GET",
+            }).then((response) => {
+              response.json().then((body) => {
+                const res = body.filename;
+                setDModelName(res);
+                isTraining(true);
+              });
+            });
+          }
           isLoading(false);
         } else {
-          //   console.log("dw");
+          //   TODO show error
+          console.log(body);
+          errorHandle();
+          reset();
         }
       });
     });
@@ -66,94 +84,127 @@ function ModelUpload({ showModelFunc }) {
     }
   };
 
+  const errorHandle = () => {
+    setError(true);
+    const timer = setTimeout(() => {
+      setError(false);
+    }, 3000);
+  };
+
+  const onDownloadClick = () => {
+    window.location.href = currentURL + "/getmodel/" + dModelName;
+    reset();
+  };
+
+  const reset = () => {
+    setFile1(null);
+    setFile2(null);
+    isLoading(false);
+    isFile1Loaded(false);
+    isFile2Loaded(false);
+    isTraining(false);
+    setDModelName(null);
+  };
+
   return (
     <ModelUploadDiv>
-      <div className='label-inputs'>
-        <p>{file1Loaded == false ? "First" : "Second"} Label</p>
-      </div>
-      {file2 == null && file1Loaded == false && (
-        <div
-          className='upload-input'
-          onClick={() => onFileClick(file1, hiddenFile1Input)}
-        >
-          <input
-            id='file-upload'
-            type='file'
-            name='file'
-            accept='image/*'
-            style={{ display: "none" }}
-            accept='.zip'
-            ref={hiddenFile1Input}
-            onChange={(e) => fileChange("1", e)}
-            onClick={(event) => {
-              event.target.value = null;
-            }}
-          />
-          {file1 == null && (
-            <div className='upload-info'>
-              <p>UPLOAD ZIP FILE HERE</p>
-              <p>Accepting .zip file containing 1000 images</p>
-            </div>
-          )}
-          {file1 && !loading && file2 == null && !file1Loaded && (
-            <div className='upload-file'>
-              <Logo />
-              <p>{file1.name}</p>
-              <div className='upload-image-btns'>
-                <a onClick={(e) => onClearClick("1")}>Clear</a>
-                <a onClick={() => onUploadClick("1")}>Upload</a>
-              </div>
-            </div>
-          )}
-          {loading && <p>Loading...</p>}
+      {error && <p className='error'>Error. Something went wrong</p>}
+
+      <div className='model-area'>
+        <div className='label-inputs'>
+          <p>{file1Loaded == false ? "First" : "Second"} Label</p>
         </div>
-      )}
-      {file1Loaded && !file2Loaded && (
-        <div
-          className='upload-input'
-          onClick={() => onFileClick(file2, hiddenFile2Input)}
-        >
-          <input
-            id='file-upload'
-            type='file'
-            name='file'
-            accept='image/*'
-            style={{ display: "none" }}
-            accept='.zip'
-            ref={hiddenFile2Input}
-            onChange={(e) => fileChange("2", e)}
-            onClick={(event) => {
-              event.target.value = null;
-            }}
-          />
-          {file2 == null && (
-            <div className='upload-info'>
-              <p>UPLOAD ZIP FILE HERE</p>
-              <p>Accepting .zip file containing 1000 images</p>
-            </div>
-          )}
-          {file2 && !loading && !file2Loaded && (
-            <div className='upload-file'>
-              <Logo />
-              <p>{file2.name}</p>
-              <div className='upload-image-btns'>
-                <a onClick={(e) => onClearClick("2")}>Clear</a>
-                <a onClick={() => onUploadClick("2")}>Upload</a>
+        {file2 == null && file1Loaded == false && (
+          <div
+            className='upload-input'
+            onClick={() => onFileClick(file1, hiddenFile1Input)}
+          >
+            <input
+              id='file-upload'
+              type='file'
+              name='file'
+              accept='image/*'
+              style={{ display: "none" }}
+              accept='.zip'
+              ref={hiddenFile1Input}
+              onChange={(e) => fileChange("1", e)}
+              onClick={(event) => {
+                event.target.value = null;
+              }}
+            />
+            {file1 == null && (
+              <div className='upload-info'>
+                <p>UPLOAD ZIP FILE HERE</p>
+                <p>Accepting .zip file containing 1000 images</p>
               </div>
-            </div>
-          )}
-          {loading && <p>Loading...</p>}
-        </div>
-      )}
-      {file2Loaded && (
-        <div className='upload-input'>
-          <div className='upload-file'>
-            <p>Training model..</p>
-            <p>This might take a while..</p>
+            )}
+            {file1 && !loading && file2 == null && !file1Loaded && (
+              <div className='upload-file'>
+                <Logo />
+                <p>{file1.name}</p>
+                <div className='upload-image-btns'>
+                  <a onClick={(e) => onClearClick("1")}>Clear</a>
+                  <a onClick={() => onUploadClick("1")}>Upload</a>
+                </div>
+              </div>
+            )}
+            {loading && <p>Loading...</p>}
           </div>
-        </div>
-      )}
-      }
+        )}
+        {file1Loaded && !file2Loaded && (
+          <div
+            className='upload-input'
+            onClick={() => onFileClick(file2, hiddenFile2Input)}
+          >
+            <input
+              id='file-upload'
+              type='file'
+              name='file'
+              accept='image/*'
+              style={{ display: "none" }}
+              accept='.zip'
+              ref={hiddenFile2Input}
+              onChange={(e) => fileChange("2", e)}
+              onClick={(event) => {
+                event.target.value = null;
+              }}
+            />
+            {file2 == null && (
+              <div className='upload-info'>
+                <p>UPLOAD ZIP FILE HERE</p>
+                <p>Accepting .zip file containing 1000 images</p>
+              </div>
+            )}
+            {file2 && !loading && !file2Loaded && (
+              <div className='upload-file'>
+                <Logo />
+                <p>{file2.name}</p>
+                <div className='upload-image-btns'>
+                  <a onClick={(e) => onClearClick("2")}>Clear</a>
+                  <a onClick={() => onUploadClick("2")}>Upload</a>
+                </div>
+              </div>
+            )}
+            {loading && <p>Loading...</p>}
+          </div>
+        )}
+        {file2Loaded && !training && (
+          <div className='upload-input'>
+            <div className='upload-file'>
+              <p>Training model..</p>
+              <p>This might take a while..</p>
+            </div>
+          </div>
+        )}
+        {file2Loaded && training && (
+          <div className='upload-input'>
+            <div className='upload-completed'>
+              <p>Training completed</p>
+              <a onClick={onDownloadClick}>Download Model</a>
+            </div>
+          </div>
+        )}
+      </div>
     </ModelUploadDiv>
   );
 }
@@ -162,7 +213,12 @@ const ModelUploadDiv = styled.div`
   max-width: 1100px;
   margin: auto;
   display: flex;
-  margin-top: 4rem;
+  flex-direction: column;
+
+  .model-area {
+    display: flex;
+    margin-top: 2rem;
+  }
 
   a {
     text-decoration: none;
@@ -242,6 +298,30 @@ const ModelUploadDiv = styled.div`
       width: 100px;
       fill: white;
       margin-bottom: 15px;
+    }
+  }
+  .error {
+    display: block;
+    border: 1px solid #ff5151;
+    padding: 0.5rem 0.8rem;
+    text-align: center;
+    color: #ff5151;
+    border-radius: 5px;
+  }
+
+  .upload-completed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    a {
+      justify-self: center;
+      align-self: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 155px;
     }
   }
 `;
