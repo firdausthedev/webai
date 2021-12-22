@@ -74,7 +74,7 @@ class TrainModel(Resource):
         y_train = []
         x_test = []
         y_test = []
-      
+
         # extract files
         try:
             extractZip(model1, model2) 
@@ -82,7 +82,7 @@ class TrainModel(Resource):
             return {"success": False, "message": "Something went wrong"}, 406
         
                 
-        os.remove("dataset/.gitignore")
+        
         
         # get list of names
         folder_list = os.listdir("dataset/")
@@ -135,7 +135,7 @@ class TrainModel(Resource):
         
       
         # cnn.accurate_test(nx_test, ny_test)
-        for epoch in range(11):
+        for epoch in range(1):
           print('--- Epoch %d ---' % (epoch + 1))
           
           #shuffle the train and test list
@@ -151,6 +151,7 @@ class TrainModel(Resource):
                   print('Step %d Average Loss %.3f | Accuracy: %d%%' %(i + 1, loss / 100, num_correct))
                   loss = 0
                   num_correct = 0
+                  break
                   
             l, acc = train(im, label)
             loss += l
@@ -161,9 +162,9 @@ class TrainModel(Resource):
 
         print(saved_list)
         # delete dataset after finish training
-        for index, folder in enumerate(folder_list):
-            shutil.rmtree("dataset/" + folder)
-        
+        # for index, folder in enumerate(folder_list):
+        #     shutil.rmtree("dataset/" + folder)
+        shutil.rmtree("dataset")
         print(len(nx_train))
         return {"success": True, "filename": "trained"}, 200
       

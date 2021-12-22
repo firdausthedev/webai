@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from werkzeug.utils import secure_filename
+from pathlib import Path
 import os
 
 ALLOWED_EXTENSIONS = {'zip'}
@@ -15,6 +16,8 @@ class UploadFile(Resource):
             file = request.files['file']
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
+                if not os.path.exists("dataset"):
+                    os.makedirs("dataset") 
                 file.save(os.path.join('dataset', filename))
             return {"success": True, "filename": filename}, 200
         except:
