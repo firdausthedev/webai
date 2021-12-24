@@ -6,14 +6,14 @@ const Navbar = ({ showModelFunc, showModelUpload }) => {
     <NavContainer id='navbar'>
       <Nav>
         <div className='title-wrapper'>
-          <h2>ImageAI</h2>
+          <h2>WebAI</h2>
           <a onClick={() => showModelFunc(showModelUpload)}>
             {!showModelUpload ? "Create" : "Test"} Model
           </a>
         </div>
         <ul>
           <li>
-            <a>Help</a>
+            <a style={{ display: "none" }}>Help</a>
           </li>
         </ul>
       </Nav>
