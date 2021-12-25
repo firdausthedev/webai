@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../img/zip.svg";
+import LoadingCircle from "./../utils/LoadingCircle";
 
 function ModelUpload({ showModelFunc }) {
   const [file1, setFile1] = useState(null);
@@ -148,7 +149,13 @@ function ModelUpload({ showModelFunc }) {
                 </div>
               </div>
             )}
-            {loading && <p>Loading...</p>}
+            {loading && (
+              <div className='upload-loading'>
+                <LoadingCircle />
+                {/* <img src={URL.createObjectURL(file)} /> */}
+                <p>Loading...</p>
+              </div>
+            )}
           </div>
         )}
         {file1Loaded && !file2Loaded && (
@@ -185,7 +192,13 @@ function ModelUpload({ showModelFunc }) {
                 </div>
               </div>
             )}
-            {loading && <p>Loading...</p>}
+            {loading && (
+              <div className='upload-loading'>
+                <LoadingCircle />
+                {/* <img src={URL.createObjectURL(file)} /> */}
+                <p>Loading...</p>
+              </div>
+            )}
           </div>
         )}
         {file2Loaded && !training && (
@@ -238,13 +251,13 @@ const ModelUploadDiv = styled.div`
   .label-inputs {
     display: flex;
     flex-direction: column;
+    width: 300px;
 
     p {
       padding: 1rem;
       border-radius: 10px;
       background-color: black;
       color: white;
-      width: 200px;
       font-weight: bolder;
       font-size: 1rem;
     }

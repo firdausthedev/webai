@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../img/upload.svg";
 import UploadHistory from "./UploadHistory";
+import LoadingCircle from "../utils/LoadingCircle";
 
 function ImageUpload() {
   const [model, setModel] = useState(["man", "woman"]);
@@ -258,6 +259,7 @@ function ImageUpload() {
                 </div>
               ) : loadPred ? (
                 <div className='upload-loading'>
+                  <LoadingCircle />
                   {/* <img src={URL.createObjectURL(file)} /> */}
                   <p>Loading...</p>
                 </div>
