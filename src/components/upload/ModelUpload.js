@@ -213,6 +213,14 @@ function ModelUpload({ showModelFunc }) {
           <div className='upload-input'>
             <div className='upload-completed'>
               <p>Training completed</p>
+              <a
+                className='link'
+                href='https://github.com/firdausthedev/webai/blob/notebook/read_model.ipynb'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                How to use?
+              </a>
               <a onClick={onDownloadClick}>Download Model</a>
             </div>
           </div>
@@ -335,6 +343,14 @@ const ModelUploadDiv = styled.div`
       justify-content: center;
       align-items: center;
       width: 155px;
+    }
+    .link {
+      background: none;
+      border-bottom: 1px solid white;
+      border-radius: 0;
+      width: fit-content;
+      padding: 0;
+      display: inline-block;
     }
   }
 `;

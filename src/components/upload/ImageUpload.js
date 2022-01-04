@@ -194,13 +194,7 @@ function ImageUpload() {
             Knife or Scissor
             {model[0] == "knife" && <span>Selected</span>}
           </a>
-          <a
-            onClick={() => modelFunc(["cat", "dog"])}
-            className={model[0] === "cat" ? "active" : ""}
-          >
-            Cat or Dog
-            {model[0] == "cat" && <span>Selected</span>}
-          </a>
+
           <a
             onClick={() => {
               modelFunc(["custom", "custom2"]);
@@ -329,7 +323,7 @@ const Upload = styled.div`
 
       a:last-child {
         background: red;
-        margin-top: 90px;
+        margin-top: 143px;
         background: black;
         color: white;
         display: flex;
